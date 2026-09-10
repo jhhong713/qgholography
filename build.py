@@ -372,8 +372,7 @@ def home_page():
     body = """<section class="hero">
   <div class="wrap">
     <div class="hero-copy">
-      <p class="eyebrow">Sogang University &middot; Department of Physics &middot; Center for Quantum Spacetime (CQUeST)</p>
-      <h1>Reading quantum gravity off its <em>boundary</em>.</h1>
+      <h1>Reading quantum gravity off its <em>boundary</em></h1>
       <div class="actions">
         <a class="btn btn-primary" href="research.html">Research</a>
         <a class="btn" href="publications.html">Publications</a>
