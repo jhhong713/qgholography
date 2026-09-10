@@ -183,7 +183,7 @@ p { margin: 0; }
 }
 .page-head h1 { font-size: clamp(30px, 5vw, 42px); }
 .page-head .lede {
-  max-width: var(--prose);
+  max-width: min(96ch, 100%);
   color: var(--ink-soft);
   font-size: 17px;
 }
@@ -582,29 +582,38 @@ main { display: block; }
   margin-top: 3px;
 }
 
-.course-rows { display: flex; flex-direction: column; }
-.course-row {
+.course-rows {
   display: grid;
-  grid-template-columns: 190px minmax(0, 1fr) max-content;
-  gap: 4px 20px;
-  align-items: baseline;
-  padding-block: 9px;
+  grid-template-columns: minmax(0, 1fr) 150px max-content;
+  column-gap: 0;
+  align-items: start;
+  max-width: 880px;
+}
+.course-rows.lectures { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) max-content; }
+.course-rows.lectures .who { white-space: normal; }
+.course-row { display: contents; }
+.course-row > div {
   border-top: 1px solid var(--line);
+  padding-block: 12px;
+  line-height: 24px;
 }
-.course-row:first-child { border-top: none; padding-top: 0; }
-.course-row .when {
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-.course-row .what { font-size: 15.5px; color: var(--ink); }
+.course-row > .what,
+.course-row > .who { padding-right: 28px; }
+.course-row:first-child > div { border-top: none; padding-top: 0; }
+.course-row .what { font-size: 16px; color: var(--ink); }
 .course-row .who {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
+}
+.course-row .when {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
   white-space: nowrap;
 }
 
@@ -649,8 +658,16 @@ main { display: block; }
 @media (max-width: 860px) {
   .inst-group { grid-template-columns: minmax(0, 1fr); }
   .inst-label { position: static; }
-  .course-row { grid-template-columns: minmax(0, 1fr) max-content; }
-  .course-row .when { grid-column: 1 / -1; }
+  .course-rows, .course-rows.lectures { grid-template-columns: minmax(0, 1fr); }
+  .course-row > .what, .course-row > .who { padding-right: 0; }
+  .course-row > div { border-top: none; padding-block: 2px; }
+  .course-row > .what { border-top: 1px solid var(--line); padding-top: 14px; }
+  .course-row:first-child > .what { border-top: none; padding-top: 0; }
+  .course-row > .when {
+    text-align: left;
+    white-space: normal;
+    padding-bottom: 14px;
+  }
   .award-note { flex-direction: column; gap: 6px; }
 }
 
