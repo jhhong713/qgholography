@@ -61,7 +61,7 @@ def page(current, title, description, body, extra_head="", extra_body=""):
   <div class="wrap">
     <a class="brand" href="index.html">
       <b>Quantum Gravity &amp; Holography</b>
-      <span>Sogang University &middot; Department of Physics</span>
+      <span>Sogang University &middot; Department of Physics &middot; Center for Quantum Spacetime (CQUeST)</span>
     </a>
     %(nav)s
   </div>
@@ -73,6 +73,7 @@ def page(current, title, description, body, extra_head="", extra_body=""):
   <div class="wrap">
     <address class="addr">
       <b>Quantum Gravity &amp; Holography Group</b>
+      Center for Quantum Spacetime (CQUeST)<br>
       Department of Physics, Sogang University<br>
       35 Baekbeom-ro, Mapo-gu, Seoul 04107, Republic of Korea<br>
       Tel. +82-2-705-8427
@@ -80,6 +81,7 @@ def page(current, title, description, body, extra_head="", extra_body=""):
     <div class="foot-links">
       <a href="mailto:%(email)s">%(email)s</a>
       <a href="%(inspire)s">INSPIRE-HEP</a>
+      <a href="https://cquest.sogang.ac.kr/">CQUeST</a>
       <a href="https://physics.sogang.ac.kr">Department of Physics</a>
       <a href="https://www.sogang.ac.kr">Sogang University</a>
     </div>
@@ -114,7 +116,8 @@ def page_head(h1, lede):
 
 # --------------------------------------------------------------- research ---
 
-TOPICS = [
+# The two frameworks the group works inside. Also shown on the home page.
+FRAMEWORKS = [
     ("Quantum gravity &amp; string theory",
      "Quantum gravity explores gravitational physics at length scales where quantum "
      "effects become significant &mdash; a regime that neither general relativity nor "
@@ -128,22 +131,32 @@ TOPICS = [
      "conformal boundary &mdash; the AdS/CFT correspondence. It gives one of the most "
      "concrete routes to string theory as a theory of quantum gravity: the physics of "
      "strings in AdS can be read off from the dual CFT."),
-    ("Exact partition functions",
+]
+
+# Concrete problems pursued within those frameworks.
+TOPICS = [
+    ("Supersymmetric partition functions",
      "Supersymmetric localization turns path integrals of superconformal field theories "
-     "into finite-dimensional matrix integrals. We compute these partition functions "
+     "into finite-dimensional matrix integrals. We evaluate these partition functions "
      "and superconformal indices exactly, then push their large-<i>N</i> expansions "
-     "well beyond the leading order."),
+     "well beyond the leading order &mdash; including the non-perturbative completions "
+     "that resum them, such as the Airy-function form of the M2-brane free energy."),
     ("Black holes &amp; quantum corrections",
-     "Matching subleading terms &mdash; logarithmic corrections, Airy-function "
-     "resummations, non-perturbative saddles &mdash; against supergravity gives a "
-     "precision test of the microscopic counting behind black hole entropy in AdS."),
+     "Every subleading term in that expansion should correspond to a specific effect in "
+     "the bulk. Matching logarithmic corrections, higher-derivative contributions and "
+     "subdominant saddles against gauged and ten- or eleven-dimensional supergravity "
+     "turns black hole entropy in AdS into a precision test of the microscopic "
+     "counting."),
 ]
 
 
-def research_page():
-    topics = "".join(
-        '<div class="topic"><h3>%s</h3><p>%s</p></div>' % (t, b) for t, b in TOPICS
+def topic_cards(items):
+    return '<div class="topics">%s</div>' % "".join(
+        '<div class="topic"><h3>%s</h3><p>%s</p></div>' % (t, b) for t, b in items
     )
+
+
+def research_page():
     body = page_head(
         "Research",
         "We study string theory as a theory of quantum gravity, using holographic "
@@ -151,29 +164,27 @@ def research_page():
     )
     body += """<section class="section">
   <div class="wrap">
-    <div class="topics">%s</div>
+    <h2 class="section-title">Themes</h2>
+    %(frameworks)s
   </div>
 </section>
 <section class="section">
   <div class="wrap">
-    <h2 class="section-title">Methods and themes</h2>
+    <h2 class="section-title">Topics</h2>
     <div class="prose">
-      <p>Concretely, the group works on superconformal field theories and their
-      supersymmetric localization, large-<i>N</i> expansions and their non-perturbative
-      completions, gauged and ten- or eleven-dimensional supergravities, and the
-      black holes and black strings they support.</p>
-      <p>A recurring theme is <strong>precision holography</strong>: computing an
-      observable exactly on the field-theory side, expanding it at large <i>N</i>,
-      and identifying every term with a specific effect in the bulk &mdash; classical
-      supergravity, higher-derivative corrections, or one-loop quantum effects.</p>
+      <p>Within those two themes the group pursues <strong>precision
+      holography</strong>: computing an observable exactly on the field-theory side,
+      expanding it at large <i>N</i>, and identifying every term with a specific
+      effect in the bulk.</p>
     </div>
+    %(topics)s
   </div>
 </section>
-""" % topics
-    return page("research.html", "Research — Quantum Gravity & Holography",
+""" % dict(frameworks=topic_cards(FRAMEWORKS), topics=topic_cards(TOPICS))
+    return page("research.html", "Research &mdash; Quantum Gravity & Holography",
                 "Research directions of the Quantum Gravity & Holography group at "
-                "Sogang University: string theory, AdS/CFT, exact partition functions, "
-                "and black holes.", body)
+                "Sogang University: string theory, AdS/CFT, supersymmetric partition "
+                "functions, and black holes.", body)
 
 
 # ----------------------------------------------------------------- people ---
@@ -315,41 +326,39 @@ def publications_page():
 # --------------------------------------------------------------- teaching ---
 
 def teaching_page():
-    groups = []
-    for inst, meta, courses in data.TEACHING:
-        rows = "".join(
-            '<div class="course-row"><div class="when">%s</div>'
-            '<div class="what">%s</div><div class="who">%s</div></div>'
-            % (term, title, role)
-            for term, title, role in courses
-        )
-        if len(data.TEACHING) == 1:
-            groups.append('<div class="course-rows">%s</div>' % rows)
-        else:
-            groups.append(
-                '<div class="inst-group">'
-                '<div class="inst-label"><b>%s</b><span>%s</span></div>'
-                '<div class="course-rows">%s</div></div>' % (inst, meta, rows)
-            )
+    courses = "".join(
+        '<div class="course-row"><div class="what">%s</div>'
+        '<div class="who">%s</div><div class="when">%s</div></div>'
+        % (title, level, " &middot; ".join(terms))
+        for title, level, terms in data.COURSES
+    )
+    special = "".join(
+        '<div class="course-row"><div class="what">%s</div>'
+        '<div class="who">%s</div><div class="when">%s</div></div>'
+        % (title, host, when)
+        for title, host, when in data.SPECIAL_LECTURES
+    )
 
     body = page_head(
         "Teaching",
-        "Courses taught in the Department of Physics at Sogang University.",
+        "Regular courses and special lectures taught by the principal investigator.",
     )
     body += """<section class="section">
   <div class="wrap">
-    <div class="course-list">%(groups)s</div>
-    <div class="award-note">
-      <span class="medal">Best Teaching Award</span>
-      <p>%(award)s</p>
-    </div>
+    <h2 class="section-title">Regular courses at Sogang University</h2>
+    <div class="course-rows">%(courses)s</div>
   </div>
 </section>
-""" % dict(groups="".join(groups), award=data.TEACHING_AWARD)
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title">Special lectures</h2>
+    <div class="course-rows lectures">%(special)s</div>
+  </div>
+</section>
+""" % dict(courses=courses, special=special)
 
     return page("teaching.html", "Teaching &mdash; Quantum Gravity & Holography",
-                "Courses taught by Junho Hong in the Department of Physics at "
-                "Sogang University.", body)
+                "Courses and lectures taught by Junho Hong at Sogang University.", body)
 
 
 # ------------------------------------------------------------------- home ---
@@ -358,15 +367,12 @@ def home_page():
     recent = data.PUBLICATIONS[:4]
     pubs = "".join(pub_html(e) for e in recent)
 
-    topics = "".join(
-        '<div class="topic"><h3>%s</h3><p>%s</p></div>' % (t, b)
-        for t, b in TOPICS[:2]
-    )
+    topics = topic_cards(FRAMEWORKS)
 
     body = """<section class="hero">
   <div class="wrap">
     <div class="hero-copy">
-      <p class="eyebrow">Sogang University &middot; Department of Physics</p>
+      <p class="eyebrow">Sogang University &middot; Department of Physics &middot; Center for Quantum Spacetime (CQUeST)</p>
       <h1>Reading quantum gravity off its <em>boundary</em>.</h1>
       <div class="actions">
         <a class="btn btn-primary" href="research.html">Research</a>
@@ -378,7 +384,6 @@ def home_page():
       <canvas id="adsDisk" width="320" height="320"
               role="img"
               aria-label="A {7,3} hyperbolic tiling of the Poincare disk, a constant-time slice of anti-de Sitter space"></canvas>
-      <figcaption>Poincar&eacute; disk &middot; {7,3} tiling &middot; a time slice of AdS<sub>3</sub></figcaption>
     </figure>
   </div>
 </section>
@@ -386,8 +391,8 @@ def home_page():
 <section class="section">
   <div class="wrap">
     <h2 class="section-title">What we work on</h2>
-    <div class="topics">%(topics)s</div>
-    <div class="actions"><a class="btn" href="research.html">All research directions</a></div>
+    %(topics)s
+    <div class="actions"><a class="btn" href="research.html">More on research directions</a></div>
   </div>
 </section>
 
@@ -396,13 +401,12 @@ def home_page():
     <h2 class="section-title">Recent work</h2>
     <div class="pub-list">%(pubs)s</div>
     <div class="actions">
-      <a class="btn" href="publications.html">All %(total)d publications</a>
+      <a class="btn" href="publications.html">List of publications</a>
       <a class="btn" href="%(inspire)s" target="_blank" rel="noopener">INSPIRE-HEP</a>
     </div>
   </div>
 </section>
-""" % dict(topics=topics, pubs=pubs, total=len(data.PUBLICATIONS),
-           inspire=data.INSPIRE_URL)
+""" % dict(topics=topics, pubs=pubs, inspire=data.INSPIRE_URL)
 
     return page("index.html", "Quantum Gravity & Holography — Sogang University",
                 "The Quantum Gravity & Holography group at Sogang University studies "

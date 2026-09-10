@@ -176,22 +176,23 @@ PUBLICATIONS = [
 ]
 
 # ------------------------------------------------------------- teaching ----
-# Grouped by institution, newest first. (term, course title, role or level)
+# (course title, level, [terms taught])
+# Listed from introductory to advanced.
 
-TEACHING = [
-    ("Sogang University", "Seoul, Korea &middot; 2024 &ndash; present", [
-        ("2026 Fall", "Mathematical Physics II", "Undergraduate"),
-        ("2026 Fall", "General Physics II", "Undergraduate"),
-        ("2026 Spring", "Quantum Field Theory II", "Graduate"),
-        ("2025, 2026 Spring", "General Physics I", "Undergraduate"),
-        ("2025 Fall", "Quantum Field Theory I", "Graduate"),
-        ("2024, 2025 Fall", "Electromagnetism II", "Undergraduate"),
-        ("2024, 2025 Spring", "Electromagnetism I", "Undergraduate"),
-        ("2024 Fall", "Quantum Mechanics II", "Graduate"),
-    ]),
+COURSES = [
+    ("General Physics I", "Undergraduate", ["2025 Spring", "2026 Spring"]),
+    ("General Physics II", "Undergraduate", ["2026 Fall"]),
+    ("Electromagnetism I", "Undergraduate", ["2024 Spring", "2025 Spring"]),
+    ("Electromagnetism II", "Undergraduate", ["2024 Fall", "2025 Fall"]),
+    ("Mathematical Physics II", "Undergraduate", ["2026 Fall"]),
+    ("Quantum Mechanics II", "Graduate", ["2024 Fall"]),
+    ("Quantum Field Theory I", "Graduate", ["2025 Fall"]),
+    ("Quantum Field Theory II", "Graduate", ["2026 Spring"]),
 ]
 
-TEACHING_AWARD = (
-    "Faculty Member of the Year 2024, College of Natural Sciences, "
-    "Sogang University."
-)
+# (lecture title, host, when)
+SPECIAL_LECTURES = [
+    ("Precision Holography",
+     "SNU&ndash;APCTP Winter School on Fundamental Physics",
+     "2026 Feb 2&ndash;6"),
+]
