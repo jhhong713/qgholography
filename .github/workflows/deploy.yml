@@ -14,12 +14,14 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+# Build and deploy run as separate jobs: when deploy-pages runs in the same job
+# right after upload-pages-artifact, the artifact lookup can come back empty
+# ("No artifacts named github-pages were found", actions/deploy-pages#451).
+# The artifact name carries the run attempt, so "Re-run jobs" never finds two
+# artifacts with the same name.
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -35,6 +37,16 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
+          name: github-pages-${{ github.run_attempt }}
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
