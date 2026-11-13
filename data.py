@@ -67,12 +67,15 @@ PEOPLE = [
 # journal_ref = "" means preprint.
 
 PUBLICATIONS = [
+    (2026, "Junho Hong, Sourav Roychowdhury",
+     "Anatomy of AdS black hole on-shell actions",
+     "", "2611.14688", ""),
     (2026, "Soumya Adhikari, Junho Hong, Chanyoung Joung, Geum Lee, Sourav Roychowdhury",
      "Boundary-value problem in type IIB supergravity and holography",
      "", "2609.03126", ""),
     (2026, "Junho Hong",
      "Constants in sequences of M2-brane partition functions",
-     "", "2608.04204", ""),
+     "Phys. Rev. D 114, 106012", "2608.04204", "10.1103/z54p-4g3q"),
     (2026, "Nikolay Bobev, Sunjin Choi, Junho Hong, Valentin Reys",
      "Towards OSV in AdS",
      "JHEP 09 (2026) 076", "2606.23893", "10.1007/JHEP09(2026)076"),
